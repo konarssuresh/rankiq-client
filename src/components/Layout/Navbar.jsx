@@ -27,6 +27,7 @@ function NavBar() {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
+        <FontAwesomeIcon icon="fa-solid fa-ranking-star" />
         RankIQ
       </Typography>
       <Divider />
@@ -48,15 +49,21 @@ function NavBar() {
   return (
     <>
       <AppBar component="nav">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: 'block' }}
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box
+            display="flex"
+            sx={{ display: 'flex', alignItems: 'center', columnGap: '0.25rem' }}
           >
-            <FontAwesomeIcon icon="fa-solid fa-ranking-star" />
-            RankIQ
-          </Typography>
+            <FontAwesomeIcon icon="fa-solid fa-ranking-star" size="lg" />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: 'block' }}
+            >
+              RankIQ
+            </Typography>
+          </Box>
+
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
@@ -83,7 +90,7 @@ function NavBar() {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },

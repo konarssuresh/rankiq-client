@@ -1,9 +1,9 @@
-import { HashRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Layout from './components/Layout/Layout';
+import './index.css';
 
 function App() {
-  return <div>Rankiq hello</div>;
+  return <Layout />;
 }
 
 const mapStateToProps = (state) => {
@@ -13,12 +13,7 @@ const mapStateToProps = (state) => {
 const TestApp = connect(mapStateToProps, null)(App);
 
 function WrappedApp() {
-  return (
-    <HashRouter>
-      <Layout />
-      <TestApp />
-    </HashRouter>
-  );
+  return <TestApp />;
 }
 
 export default WrappedApp;
