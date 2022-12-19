@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -8,7 +9,12 @@ import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { isEmpty } from 'lodash';
 import { REGEX, ERROR_MESSAGE } from '../constants';
+import { signInUser } from '../ducks/auth';
+import { authDataSelector } from '../selectors';
 
 const StyledLink = styled(Link)({
   textDecoration: 'none',
@@ -22,16 +28,25 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 function Login() {
-  const { control, formState, reset } = useForm({
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { error, loading, userInfo } = useSelector(authDataSelector);
+
+  useEffect(() => {
+    if (!isEmpty(userInfo)) {
+      navigate('/dashboard');
+    }
+  }, [navigate, userInfo]);
+  const { control, formState, reset, getValues } = useForm({
     mode: 'onBlur',
-    defaultValues: { userName: '', password: '' },
+    defaultValues: { email: '', password: '' },
   });
 
   const {
     field: { ref, ...userNameProps },
     fieldState: { invalid, error: userNameError },
   } = useController({
-    name: 'userName',
+    name: 'email',
     control,
     rules: {
       required: ERROR_MESSAGE.REQUIRED,
@@ -96,9 +111,12 @@ function Login() {
             <Button
               size="large"
               variant="contained"
-              disabled={!formState.isValid}
+              disabled={!formState.isValid || loading}
               fullWidth
               type="submit"
+              onClick={() => {
+                dispatch(signInUser(getValues()));
+              }}
             >
               Login
             </Button>

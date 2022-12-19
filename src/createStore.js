@@ -1,18 +1,16 @@
 /* eslint-disable dot-notation */
-import thunk from 'redux-thunk';
-import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
-import domain from './ducks';
-
-export const reducers = combineReducers({ domain, test2: domain });
+import { authReducer } from './ducks';
 
 function setupStore() {
-  const middlewares = [];
-  middlewares.push(thunk.withExtraArgument({}));
-
-  const store = configureStore({ reducer: reducers, middleware: middlewares });
+  const store = configureStore({
+    reducer: { auth: authReducer, ducks: { test: () => ({ test: 'test' }) } },
+    // middleware: [...middlewares],
+  });
 
   return store;
 }
 
-export const store = setupStore();
+const store = setupStore();
+
+export default store;

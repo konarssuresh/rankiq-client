@@ -1,6 +1,3 @@
-import { combineReducers } from 'redux';
+import authReducer from './auth';
 
-const test = () => {
-  return { test: 'tests' };
-};
-export default combineReducers({ test });
+export { authReducer };

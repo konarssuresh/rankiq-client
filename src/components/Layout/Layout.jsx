@@ -1,10 +1,13 @@
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Route, Routes, HashRouter } from 'react-router-dom';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import NavBar from './Navbar';
 import Footer from './Footer';
 import Login from '../Login';
 import SignUp from '../Signup';
+import UserHistory from '../UserHistory';
+import DashBoard from '../DashBoard';
+import ProtectedRoute from '../../routing/ProtectedRoute';
 
 const themeOptions = {
   palette: {
@@ -24,19 +27,22 @@ function Layout() {
   const theme = createTheme(themeOptions);
   return (
     <ThemeProvider theme={theme}>
-      <HashRouter>
+      <BrowserRouter>
         <Box>
           <NavBar />
           <Box>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/dashboard" element={<DashBoard />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/userHistory" element={<UserHistory />} />
+              </Route>
             </Routes>
           </Box>
-
           <Footer />
         </Box>
-      </HashRouter>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
