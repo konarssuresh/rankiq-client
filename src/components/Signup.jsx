@@ -102,10 +102,6 @@ function SignUp() {
   } = useController({
     name: 'lastName',
     control,
-    rules: {
-      required: ERROR_MESSAGE.REQUIRED,
-      pattern: { value: REGEX.PASSWORD, message: ERROR_MESSAGE.PASSWORD },
-    },
   });
 
   const handleReset = () => {
@@ -176,7 +172,6 @@ function SignUp() {
             <TextField
               {...lNameProps}
               inputRef={lNameRef}
-              error={lNameInvalid}
               label="Last Name"
               type="text"
               fullWidth
@@ -193,7 +188,7 @@ function SignUp() {
                 dispatch(signUpUser(getValues()));
               }}
             >
-              Login
+              Sign Up
             </Button>
           </Grid>
           <Grid item xs={6}>
