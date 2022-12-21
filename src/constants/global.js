@@ -4,7 +4,8 @@ export const REGEX = {
 };
 
 export const ERROR_MESSAGE = {
-  PASSWORD: 'Weak or invalid password',
+  PASSWORD:
+    'min 6 char with combination of letter,number and special char needed',
   EMAIL: 'Invalid email',
   REQUIRED: 'This field is required',
 };

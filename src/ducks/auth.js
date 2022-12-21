@@ -24,6 +24,14 @@ export const signInUser = createAsyncThunk(
       body: JSON.stringify(userData),
     });
     const responseData = await res.json();
+    if (!res.ok) {
+      // create error object and reject if not a 2xx response code
+      const err = new Error(responseData?.message);
+      err.response = res;
+      err.status = res.status;
+      throw err;
+    }
+
     localStorage.setItem('accessToken', responseData.accessToken);
     return responseData;
   }
@@ -40,6 +48,14 @@ export const signUpUser = createAsyncThunk(
       body: JSON.stringify(userData),
     });
     const responseData = await res.json();
+
+    if (!res.ok) {
+      const { message = '' } = responseData;
+      const err = new Error(message || res);
+      err.response = res;
+      err.status = res.status;
+      throw err;
+    }
     return responseData;
   }
 );
@@ -47,7 +63,13 @@ export const signUpUser = createAsyncThunk(
 const authDataSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    logout() {
+      localStorage.removeItem('accessToken');
+      const stateToReturn = { ...initialState, accessToken: null };
+      return stateToReturn;
+    },
+  },
   extraReducers: {
     [signInUser.pending]: (state) => {
       state.loading = true;
@@ -62,7 +84,7 @@ const authDataSlice = createSlice({
     [signInUser.rejected]: (state, { error }) => {
       state.loading = false;
       state.data = {};
-      state.error = error;
+      state.error = error?.message || error;
     },
     [signUpUser.pending]: (state) => {
       state.loading = true;
@@ -74,9 +96,11 @@ const authDataSlice = createSlice({
     },
     [signUpUser.rejected]: (state, { error }) => {
       state.loading = false;
-      state.error = error;
+      state.error = error?.message || error;
     },
   },
 });
+
+export const { logout } = authDataSlice.actions;
 
 export default authDataSlice.reducer;

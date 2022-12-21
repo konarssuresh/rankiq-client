@@ -1,5 +1,7 @@
+import Box from '@mui/material/Box';
+
 function UserHistory() {
-  return <div>User History Route</div>;
+  return <Box>User History Route</Box>;
 }
 
 export default UserHistory;
