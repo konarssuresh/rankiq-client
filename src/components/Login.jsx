@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -9,8 +9,9 @@ import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
+import Alert from '@mui/material/Alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import { REGEX, ERROR_MESSAGE } from '../constants';
 import { signInUser } from '../ducks/auth';
@@ -18,7 +19,6 @@ import { authDataSelector } from '../selectors';
 
 const StyledLink = styled(Link)({
   textDecoration: 'none',
-  color: 'inherit',
 });
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -30,6 +30,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showError, setShowError] = useState(true);
   const { error, loading, userInfo } = useSelector(authDataSelector);
 
   useEffect(() => {
@@ -67,6 +68,7 @@ function Login() {
   });
 
   const handleReset = () => {
+    setShowError(false);
     reset();
   };
 
@@ -77,77 +79,107 @@ function Login() {
         mt={{ xs: '5rem', sm: '9rem' }}
         mb={{ xs: '1rem', sm: '5rem' }}
       >
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <Typography variant="h4" textAlign="center">
-              Login
-            </Typography>
+        <form>
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <Typography variant="h4" textAlign="center">
+                Login
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...userNameProps}
+                inputRef={ref}
+                error={invalid}
+                label="Email Id"
+                type="email"
+                helperText={userNameError?.message}
+                required
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...passwordProps}
+                inputRef={passwordRef}
+                error={passwordInvalid}
+                label="Password"
+                helperText={passwordError?.message}
+                required
+                type="password"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                size="large"
+                variant="contained"
+                disabled={!formState.isValid || loading}
+                fullWidth
+                type="submit"
+                onClick={() => {
+                  setShowError(true);
+                  dispatch(signInUser(getValues()));
+                }}
+              >
+                Login
+              </Button>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Button
+                size="large"
+                variant="outlined"
+                onClick={handleReset}
+                fullWidth
+              >
+                Reset
+              </Button>
+            </Grid>
+            {!isEmpty(error) && showError && (
+              <Grid item xs={12}>
+                <Alert severity="error">{error}</Alert>
+              </Grid>
+            )}
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  columnGap: '0.5rem',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography variant="body1" textAlign="center">
+                  Not on RankIQ yet?
+                </Typography>
+                <StyledLink
+                  component={RouterLink}
+                  variant="body1"
+                  color="primary.main"
+                  to="/signup"
+                >
+                  signup
+                </StyledLink>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Divider>OR</Divider>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                size="large"
+                variant="contained"
+                fullWidth
+                onClick={() => {
+                  navigate('/dashboard');
+                }}
+              >
+                Continue as Guest
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              {...userNameProps}
-              inputRef={ref}
-              error={invalid}
-              label="Email Id"
-              type="email"
-              helperText={userNameError?.message}
-              required
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              {...passwordProps}
-              inputRef={passwordRef}
-              error={passwordInvalid}
-              label="Password"
-              helperText={passwordError?.message}
-              required
-              type="password"
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              size="large"
-              variant="contained"
-              disabled={!formState.isValid || loading}
-              fullWidth
-              type="submit"
-              onClick={() => {
-                dispatch(signInUser(getValues()));
-              }}
-            >
-              Login
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              size="large"
-              variant="outlined"
-              onClick={handleReset}
-              fullWidth
-            >
-              Reset
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1" textAlign="center">
-              Not on RankIQ yet?
-              <StyledLink color="primary.main" variant="body1" href="/signup">
-                Sign Up.
-              </StyledLink>
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider>OR</Divider>
-          </Grid>
-          <Grid item xs={12}>
-            <Button size="large" variant="contained" fullWidth type="submit">
-              Continue as Guest
-            </Button>
-          </Grid>
-        </Grid>
+        </form>
       </StyledBox>
     </Container>
   );
