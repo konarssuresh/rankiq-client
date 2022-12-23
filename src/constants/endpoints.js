@@ -4,3 +4,7 @@ export const USER_API = {
   LOGIN: 'user/signin',
   SIGNUP: 'user/signup',
 };
+
+export const CONTENT_API = {
+  GET_CONTENT: 'content/getContent?requestUrl=',
+};

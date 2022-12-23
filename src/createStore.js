@@ -1,11 +1,10 @@
 /* eslint-disable dot-notation */
 import { configureStore } from '@reduxjs/toolkit';
-import { authReducer } from './ducks';
+import { authReducer, examInfoReducer } from './ducks';
 
 function setupStore() {
   const store = configureStore({
-    reducer: { auth: authReducer, ducks: { test: () => ({ test: 'test' }) } },
-    // middleware: [...middlewares],
+    reducer: { auth: authReducer, examInfo: examInfoReducer },
   });
 
   return store;
