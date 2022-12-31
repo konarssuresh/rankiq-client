@@ -1,10 +1,9 @@
-import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -29,26 +28,25 @@ const LinksContainer = styled(Box)({
   rowGap: '0.5rem',
 });
 
-const footerItems = ['Support', 'Privacy', 'FAQs'];
-
 function Footer() {
   return (
     <footer>
       <Box
+        paddingX={{ xs: 3, sm: 10 }}
+        paddingY={{ xs: 3, sm: 10 }}
         sx={{
           backgroundColor: 'primary.main',
-          //   marginTop: '2rem',
+          marginTop: '2rem',
           color: 'text.navFooter',
-          //   position: 'fixed',
-          //   left: 0,
-          //   bottom: 0,
-          //   width: '100%',
+          marginLeft: '0',
+          marginRight: '0',
         }}
       >
         <Container maxWidth="lg">
           <Grid container spacing={1}>
-            <Grid item xs={12} sm={2} md={2}>
+            <Grid item xs={12}>
               <Box
+                display="flex"
                 sx={{
                   display: 'flex',
                   alignItems: 'baseline',
@@ -65,43 +63,55 @@ function Footer() {
                 </Typography>
               </Box>
             </Grid>
+            <Grid item xs={12} sm={4} md={4}>
+              <Box>
+                <Typography variant="h6" borderBottom={1} mb={1}>
+                  Help
+                </Typography>
+                <LinksContainer>
+                  <Box>
+                    <StyledLink variant="body1" href="/">
+                      Support
+                    </StyledLink>
+                  </Box>
+                  <Box>
+                    <StyledLink variant="body1" href="/">
+                      Privacy
+                    </StyledLink>
+                  </Box>
+                  <Box>
+                    <StyledLink variant="body1" href="/">
+                      FAQs
+                    </StyledLink>
+                  </Box>
+                </LinksContainer>
+              </Box>
+            </Grid>
 
             <Grid item xs={12} sm={4} md={4}>
-              <Typography textAlign="center">
-                &reg; {new Date().getFullYear()} RankIQ. All rights reserved
+              <Typography variant="h6" borderBottom={1} mb={1}>
+                Help
               </Typography>
+              <LinksContainer>
+                <Box>
+                  <StyledLink variant="body1" href="/">
+                    Support
+                  </StyledLink>
+                </Box>
+                <Box>
+                  <StyledLink variant="body1" href="/">
+                    Privacy
+                  </StyledLink>
+                </Box>
+                <Box>
+                  <StyledLink variant="body1" href="/">
+                    FAQs
+                  </StyledLink>
+                </Box>
+              </LinksContainer>
             </Grid>
 
             <Grid item xs={12} sm={4} md={4}>
-              <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                {footerItems.map((item) => (
-                  <Button component={Link} key={item} sx={{ color: '#fff' }}>
-                    {item}
-                  </Button>
-                ))}
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={2} md={2}>
-              <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                <Button component={Link} sx={{ color: '#fff' }}>
-                  <FacebookIcon />
-                </Button>
-                <Button component={Link} sx={{ color: '#fff' }}>
-                  <InstagramIcon />
-                </Button>
-                <Button component={Link} sx={{ color: '#fff' }}>
-                  <YoutubeIcon />
-                </Button>
-                <Button component={Link} sx={{ color: '#fff' }}>
-                  <TelegramIcon />
-                </Button>
-                <Button component={Link} sx={{ color: '#fff' }}>
-                  <TwitterIcon />
-                </Button>
-              </Box>
-            </Grid>
-
-            {/* <Grid item xs={12} sm={4} md={4}>
               <Typography variant="h6" borderBottom={1} mb={1}>
                 Social
               </Typography>
@@ -137,8 +147,16 @@ function Footer() {
                   </StyledLink>
                 </SocialContainer>
               </LinksContainer>
-            </Grid> */}
+            </Grid>
           </Grid>
+
+          <Typography
+            textAlign="center"
+            pt={{ xs: 5, sm: 10 }}
+            pb={{ xs: 5, sm: 10 }}
+          >
+            &reg; {new Date().getFullYear()} RankIQ. All rights reserved
+          </Typography>
         </Container>
       </Box>
     </footer>

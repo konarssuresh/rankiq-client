@@ -1,31 +1,31 @@
 import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
-import { useController, useForm } from 'react-hook-form';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
-import Alert from '@mui/material/Alert';
 import { isEmpty } from 'lodash';
+import Typography from '@mui/material/Typography';
+import { useController, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTheme } from '@emotion/react';
 import { REGEX, ERROR_MESSAGE } from '../constants';
 import { signUpUser } from '../ducks/auth';
 import { authDataSelector, accessTokenSelector } from '../selectors';
 
-const StyledLink = styled(Link)({
-  textDecoration: 'none',
-});
+// const StyledLink = styled(Link)({
+//   textDecoration: 'none',
+//   color: 'inherit',
+// });
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.box.main,
-  boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-  borderRadius: '1.3125rem',
-}));
+// const StyledBox = styled(Box)(({ theme }) => ({
+//   backgroundColor: theme.palette.box.main,
+//   boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+//   borderRadius: '1.3125rem',
+// }));
 
 function SignUp() {
   const dispatch = useDispatch();
@@ -33,14 +33,16 @@ function SignUp() {
   const [showError, setShowError] = useState(false);
   const accessToken = useSelector(accessTokenSelector);
   const navigate = useNavigate();
+  const theme = useTheme();
 
-  useEffect(() => {
-    if (success) {
-      navigate('/login');
-    } else if (!isEmpty(accessToken)) {
-      navigate('/dashboard');
-    }
-  }, [navigate, success, accessToken]);
+//   useEffect(() => {
+//     if (success) {
+//       navigate('/login');
+//     } else if (!isEmpty(accessToken)) {
+//       navigate('/dashboard');
+//     }
+//   }, [navigate, success, accessToken]);
+
   const { control, formState, reset, getValues } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -114,10 +116,12 @@ function SignUp() {
   };
   return (
     <Container maxWidth="md">
-      <StyledBox
-        sx={{ padding: { xs: '2rem 1rem', sm: '2rem' } }}
-        mt={{ xs: '5rem', sm: '8rem' }}
-        mb={{ xs: '1rem', sm: '3rem' }}
+      <Card
+        sx={{
+          padding: { xs: '2rem 1rem', sm: '2rem' },
+          mt: { xs: '3rem', sm: '5rem' },
+          mb: { xs: '1rem', sm: '3rem' },
+        }}
       >
         <form>
           <Grid container spacing={4}>
@@ -191,7 +195,6 @@ function SignUp() {
                 fullWidth
                 type="submit"
                 onClick={() => {
-                  setShowError(true);
                   dispatch(signUpUser(getValues()));
                 }}
               >
@@ -208,50 +211,29 @@ function SignUp() {
                 Reset
               </Button>
             </Grid>
-            {!isEmpty(error) && showError && (
-              <Grid item xs={12}>
-                <Alert severity="error">{error}</Alert>
-              </Grid>
-            )}
             <Grid item xs={12}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  columnGap: '0.5rem',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography variant="body1" textAlign="center">
-                  Already signed up?
-                </Typography>
-                <StyledLink
-                  component={RouterLink}
+              <Typography variant="body1" textAlign="center">
+                {`Already signed up? `}
+                <Link
+                  color={theme.palette.primary.main}
                   variant="body1"
-                  color="primary.main"
-                  to="/login"
+                  href="/login"
                 >
                   Login.
-                </StyledLink>
-              </Box>
+                </Link>
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               <Divider>OR</Divider>
             </Grid>
             <Grid item xs={12}>
-              <Button
-                size="large"
-                variant="contained"
-                fullWidth
-                onClick={() => {
-                  navigate('/dashboard');
-                }}
-              >
+              <Button size="large" variant="contained" fullWidth type="submit">
                 Continue as Guest
               </Button>
             </Grid>
           </Grid>
         </form>
-      </StyledBox>
+      </Card>
     </Container>
   );
 }
