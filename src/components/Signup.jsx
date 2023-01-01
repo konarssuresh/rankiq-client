@@ -6,42 +6,33 @@ import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
+import Alert from '@mui/material/Alert';
 import { isEmpty } from 'lodash';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import { useController, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '@emotion/react';
 import { REGEX, ERROR_MESSAGE } from '../constants';
 import { signUpUser } from '../ducks/auth';
 import { authDataSelector, accessTokenSelector } from '../selectors';
 
-// const StyledLink = styled(Link)({
-//   textDecoration: 'none',
-//   color: 'inherit',
-// });
-
-// const StyledBox = styled(Box)(({ theme }) => ({
-//   backgroundColor: theme.palette.box.main,
-//   boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-//   borderRadius: '1.3125rem',
-// }));
-
 function SignUp() {
   const dispatch = useDispatch();
   const { loading, error, success } = useSelector(authDataSelector);
-  const [showError, setShowError] = useState(false);
+  const [showSignupError, setSignUpError] = useState(false);
   const accessToken = useSelector(accessTokenSelector);
   const navigate = useNavigate();
   const theme = useTheme();
 
-//   useEffect(() => {
-//     if (success) {
-//       navigate('/login');
-//     } else if (!isEmpty(accessToken)) {
-//       navigate('/dashboard');
-//     }
-//   }, [navigate, success, accessToken]);
+  useEffect(() => {
+    if (success) {
+      navigate('/login');
+    } else if (!isEmpty(accessToken)) {
+      navigate('/dashboard');
+    }
+  }, [navigate, success, accessToken]);
 
   const { control, formState, reset, getValues } = useForm({
     mode: 'onBlur',
@@ -112,7 +103,7 @@ function SignUp() {
 
   const handleReset = () => {
     reset();
-    setShowError(false);
+    setSignUpError(false);
   };
   return (
     <Container maxWidth="md">
@@ -195,6 +186,7 @@ function SignUp() {
                 fullWidth
                 type="submit"
                 onClick={() => {
+                  setSignUpError(true);
                   dispatch(signUpUser(getValues()));
                 }}
               >
@@ -211,17 +203,31 @@ function SignUp() {
                 Reset
               </Button>
             </Grid>
+            {!isEmpty(error) && showSignupError && (
+              <Grid item xs={12}>
+                <Alert severity="error">{error}</Alert>
+              </Grid>
+            )}
             <Grid item xs={12}>
-              <Typography variant="body1" textAlign="center">
-                {`Already signed up? `}
+              <Box
+                sx={{
+                  display: 'flex',
+                  columnGap: '0.5rem',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography variant="body1" textAlign="center">
+                  Already signed up?
+                </Typography>
                 <Link
-                  color={theme.palette.primary.main}
+                  component={RouterLink}
                   variant="body1"
-                  href="/login"
+                  color={theme.palette.primary.main}
+                  to="/login"
                 >
                   Login.
                 </Link>
-              </Typography>
+              </Box>
             </Grid>
             <Grid item xs={12}>
               <Divider>OR</Divider>

@@ -15,7 +15,7 @@ import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import { REGEX, ERROR_MESSAGE } from '../constants';
 import { signInUser } from '../ducks/auth';
-import { authDataSelector } from '../selectors';
+import { accessTokenSelector, authDataSelector } from '../selectors';
 
 const StyledLink = styled(Link)({
   textDecoration: 'none',
@@ -30,14 +30,15 @@ const StyledBox = styled(Box)(({ theme }) => ({
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showError, setShowError] = useState(true);
-  const { error, loading, userInfo } = useSelector(authDataSelector);
+  const [showError, setShowError] = useState(false);
+  const { error, loading } = useSelector(authDataSelector);
+  const accessToken = useSelector(accessTokenSelector);
 
   useEffect(() => {
-    if (!isEmpty(userInfo)) {
+    if (!isEmpty(accessToken)) {
       navigate('/dashboard');
     }
-  }, [navigate, userInfo]);
+  }, [navigate, accessToken]);
   const { control, formState, reset, getValues } = useForm({
     mode: 'onBlur',
     defaultValues: { email: '', password: '' },
