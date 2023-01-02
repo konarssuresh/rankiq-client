@@ -5,29 +5,11 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { styled } from '@mui/material/styles';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YoutubeIcon from '@mui/icons-material/YouTube';
 import TelegramIcon from '@mui/icons-material/Telegram';
-
-const StyledLink = styled(Link)({
-  textDecoration: 'none',
-  color: 'inherit',
-});
-
-const SocialContainer = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
-  columnGap: '0.5rem',
-});
-
-const LinksContainer = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  rowGap: '0.5rem',
-});
 
 const footerItems = ['Support', 'Privacy', 'FAQs'];
 
